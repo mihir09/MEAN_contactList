@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact List</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="controllers/controllers.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body ng-app>
+    <div class="container" ng-controller="AppCtrl">
+        <h1 class="display-3 text-center">Contact List</h1>
+        <form name="contactForm">
+        <table class="table">
+                <tr>
+                    <td>Name</td>
+                    <td>
+                        <input type="text" ng-model="contact.name" name="name" class="form-control" required>
+                        <div class="error" ng-show="contactForm.name.$dirty && contactForm.name.$error.required">Name is required.</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>
+                        <input type="email" ng-model="contact.email" name="email" class="form-control" required>
+                        <div class="error" ng-show="contactForm.email.$dirty && contactForm.email.$error.required">Email is required.</div>
+                        <div class="error" ng-show="contactForm.email.$dirty && contactForm.email.$error.email">Invalid email address.</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Number</td>
+                    <td>
+                        <input type="text" ng-model="contact.number" name="number" class="form-control"  ng-pattern="/^\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})$/" required>
+                        <div class="error" ng-show="contactForm.number.$dirty && contactForm.number.$error.required">Number is required.</div>
+                        <div class="error" ng-show="contactForm.number.$dirty && contactForm.number.$error.pattern">Invalid phone number format.</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center" colspan="2">
+                        <button ng-click="addContact()" class="btn btn-primary" ng-disabled="contactForm.$invalid">Add Contact</button>
+                        <button ng-click="deselect()" class="btn btn-secondary">Clear</button>
+                    </td>
+                </tr>
+        </table>
+        </form>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                    <th>Edit</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="contacts in contactList">
+                    <td>
+                        <span ng-hide="editMode">{{contacts.name}}</span>
+                        <input type="text" ng-show="editMode" ng-model="c.name">
+                    </td>
+                    
+                    <td>
+                        <span ng-hide="editMode">{{contacts.email}}</span>
+                        <input type="text" ng-show="editMode" ng-model="c.email">
+                    </td>
+
+                    <td>
+                        <span ng-hide="editMode">{{contacts.number}}</span>
+                        <input type="text" ng-show="editMode" ng-model="c.number">
+                    </td>
+
+                    <td class="icons">
+                        <i ng-hide="editMode" style="color: cornflowerblue;" ng-click="editMode = true; edit(contacts._id)" class="fa-solid fa-pen-to-square"></i>
+                        <i class="fa-solid fa-check" style="color: cornflowerblue;" ng-show="editMode" ng-click="editMode=false; update(contacts._id)"></i>
+                    </td>
+                    <td class="icons">
+                        <i class="fa-solid fa-trash" style="color: red;" ng-click="remove(contacts._id)"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.32/angular.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</body>
+
+</html>
